@@ -1368,7 +1368,7 @@ static uint64_t znsssd_write(ZNS *zns, NvmeRequest *req){
         chnl->next_ch_avail_time = chnl_stime + spp->ch_xfer_lat;
         //pthread_spin_unlock(&(chnl->time_lock));
         #ifdef RESOURCE_UTIL_LOG 
-        femu_log("chnl [%u] status busy [%lu] from %lu to %lu [sqid %u] write", my_chnl_idx, qemu_clock_get_ns(QEMU_CLOCK_REALTIME), chnl_stime, chnl->next_ch_avail_time, req->sq->sqid);
+        //femu_log("chnl [%u] status busy [%lu] from %lu to %lu [sqid %u] write", my_chnl_idx, qemu_clock_get_ns(QEMU_CLOCK_REALTIME), chnl_stime, chnl->next_ch_avail_time, req->sq->sqid);
         #endif
 
         //write: then do NAND program
@@ -1381,7 +1381,7 @@ static uint64_t znsssd_write(ZNS *zns, NvmeRequest *req){
         
         //pthread_spin_unlock(&(chip->time_lock));
         #ifdef RESOURCE_UTIL_LOG 
-        femu_log("plane [%u] status busy [%lu] from %lu to %lu [sqid %u] write\n", my_plane_idx, qemu_clock_get_ns(QEMU_CLOCK_REALTIME), nand_stime, plane->next_avail_time, req->sq->sqid );
+        //femu_log("plane [%u] status busy [%lu] from %lu to %lu [sqid %u] write\n", my_plane_idx, qemu_clock_get_ns(QEMU_CLOCK_REALTIME), nand_stime, plane->next_avail_time, req->sq->sqid );
         #endif
         maxlat = (maxlat < currlat)? currlat : maxlat;
 #endif
@@ -1457,8 +1457,8 @@ static uint64_t  znsssd_read(ZNS *zns, NvmeRequest *req){
         //femu_log("chnl %u status busy [%lu] from %lu to %lu ", my_chnl_idx, qemu_clock_get_ns(QEMU_CLOCK_REALTIME),chnl_stime, chnl->next_ch_avail_time);
         //femu_log("chip [%u] status busy from %lu to %lu (r)\n", my_chip_idx, nand_stime,chip->next_avail_time );
         #ifdef RESOURCE_UTIL_LOG 
-        femu_log("chnl [%u] status busy [%lu] from %lu to %lu [sqid %u] read", my_chnl_idx, qemu_clock_get_ns(QEMU_CLOCK_REALTIME), chnl_stime, chnl->next_ch_avail_time, req->sq->sqid);
-        femu_log("plane [%u] status busy [%lu] from %lu to %lu [sqid %u] read\n", my_plane_idx, qemu_clock_get_ns(QEMU_CLOCK_REALTIME), nand_stime, plane->next_avail_time,req->sq->sqid );
+        //femu_log("chnl [%u] status busy [%lu] from %lu to %lu [sqid %u] read", my_chnl_idx, qemu_clock_get_ns(QEMU_CLOCK_REALTIME), chnl_stime, chnl->next_ch_avail_time, req->sq->sqid);
+        //femu_log("plane [%u] status busy [%lu] from %lu to %lu [sqid %u] read\n", my_plane_idx, qemu_clock_get_ns(QEMU_CLOCK_REALTIME), nand_stime, plane->next_avail_time,req->sq->sqid );
         #endif
         currlat = chnl->next_ch_avail_time - cmd_stime;
         maxlat = (maxlat < currlat)? currlat : maxlat;
@@ -1705,10 +1705,10 @@ static uint16_t zns_io_cmd(FemuCtrl *n, NvmeNamespace *ns, NvmeCmd *cmd,
 
     switch (cmd->opcode) {
     case NVME_CMD_READ:
-        femu_log("ZNS READ cmd->opcode %d %x\n",cmd->opcode, cmd->opcode);
+       // femu_log("ZNS READ cmd->opcode %d %x\n",cmd->opcode, cmd->opcode);
         return zns_read(n, ns, cmd, req);
     case NVME_CMD_WRITE:
-        femu_log("ZNS WRITE cmd->opcode %d %x\n",cmd->opcode, cmd->opcode);
+        //femu_log("ZNS WRITE cmd->opcode %d %x\n",cmd->opcode, cmd->opcode);
         return zns_write(n, ns, cmd, req);
         //else return zns_zone_append(n, req);
         //zns_write(n, ns, cmd, req);
@@ -1794,13 +1794,13 @@ static void znsssd_init_params(FemuCtrl * n, struct zns_ssdparams *spp){
     /**
      * 1. SSD size  2. zone size 3. # of chnls 4. # of chnls per zone
     */
-    spp->nchnls         = 16;   //default : 8                                                   /* FIXME : = ZNS_MAX_CHANNEL channel configuration like this */
-    spp->chnls_per_zone = 8;   
+    spp->nchnls         = 4;   //default : 8                                                   /* FIXME : = ZNS_MAX_CHANNEL channel configuration like this */
+    spp->chnls_per_zone = 4;   
     spp->zones          = n->num_zones;     
     spp->ways           = 1;    //default : 2
     spp->ways_per_zone  = 1;    //default :==spp->ways
     spp->dies_per_chip  = 1;    //default : 1
-    spp->planes_per_die = 1;    //default : 4
+    spp->planes_per_die = 4;    //default : 4
     spp->register_model = 1;    
     /*Inho @ Temporarly, FEMU doesn't support more than 1 namespace. Parameters below is for supporting different zone configurations temporarly*/
 
@@ -1886,7 +1886,7 @@ void znsssd_init(FemuCtrl * n){
     }
    
     for (uint64_t i =0; i < 1600; i+=16){
-        femu_err("[TEST] zns.c:1767 slba:%lu  ppa:%lu plane:%lu chidx:%lu chnnl:%lu \n",\
+        //femu_err("[TEST] zns.c:1767 slba:%lu  ppa:%lu plane:%lu chidx:%lu chnnl:%lu \n",\
         i, zns_get_multichnlway_ppn_idx(n->namespaces,i), 
         zns_advanced_plane_idx(n->namespaces, i), \
         zns_get_multiway_chip_idx(n->namespaces, i), \
