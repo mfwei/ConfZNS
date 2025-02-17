@@ -457,7 +457,7 @@ static uint16_t zns_check_zone_write(FemuCtrl *n, NvmeNamespace *ns,
                                       uint32_t nlb, bool append)
 {
     uint16_t status;
-    uint32_t zidx = zns_zone_idx(ns, slba);
+	//uint32_t zidx = zns_zone_idx(ns, slba);
     if (unlikely((slba + nlb) > zns_zone_wr_boundary(zone))) {
         status = NVME_ZONE_BOUNDARY_ERROR;
     } else {
@@ -1884,7 +1884,7 @@ void znsssd_init(FemuCtrl * n){
     for (uint64_t i=0; i<nplanes; i++){
         zns_init_plane(&zns->planes[i], spp);
     }
-   
+   /*
     for (uint64_t i =0; i < 1600; i+=16){
         //femu_err("[TEST] zns.c:1767 slba:%lu  ppa:%lu plane:%lu chidx:%lu chnnl:%lu \n",\
         i, zns_get_multichnlway_ppn_idx(n->namespaces,i), 
@@ -1892,6 +1892,7 @@ void znsssd_init(FemuCtrl * n){
         zns_get_multiway_chip_idx(n->namespaces, i), \
         zns_advanced_chnl_idx(n->namespaces,i));
     }
+	*/
 }
 
 static void zns_exit(FemuCtrl *n)
