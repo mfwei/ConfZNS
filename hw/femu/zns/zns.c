@@ -1795,10 +1795,10 @@ static void znsssd_init_params(FemuCtrl * n, struct zns_ssdparams *spp){
      * 1. SSD size  2. zone size 3. # of chnls 4. # of chnls per zone
     */
     spp->nchnls         = 8;   //default : 8                                                   /* FIXME : = ZNS_MAX_CHANNEL channel configuration like this */
-    spp->chnls_per_zone = 1;   
+    spp->chnls_per_zone = 8;   
     spp->zones          = n->num_zones;     
     spp->ways           = 2;    //default : 2
-    spp->ways_per_zone  = 2;    //default :==spp->ways
+    spp->ways_per_zone  = 1;    //default :==spp->ways
     spp->dies_per_chip  = 1;    //default : 1
     spp->planes_per_die = 4;    //default : 4
     spp->register_model = 1;    
