@@ -1798,7 +1798,7 @@ static void znsssd_init_params(FemuCtrl * n, struct zns_ssdparams *spp){
     spp->chnls_per_zone = 1;   
     spp->zones          = n->num_zones;     
     spp->ways           = 2;    //default : 2
-    spp->ways_per_zone  = 2;    //default :==spp->ways
+    spp->ways_per_zone  = 1;    //default :==spp->ways
     spp->dies_per_chip  = 1;    //default : 1
     spp->planes_per_die = 4;    //default : 4
     spp->register_model = 1;    
