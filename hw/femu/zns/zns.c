@@ -4,7 +4,7 @@
 
 #define MIN_DISCARD_GRANULARITY     (4 * KiB)
 #define ZNS_PAGE_SIZE               (16 * KiB)
-#define NVME_DEFAULT_ZONE_SIZE      (64 * MiB)
+#define NVME_DEFAULT_ZONE_SIZE      (1024 * MiB)
 //#define NVME_SECOND_NS_ZONE_SIZE    (64 * MiB)
 #define NVME_DEFAULT_MAX_AZ_SIZE    (128 * KiB)
 uint64_t lag = 0;
