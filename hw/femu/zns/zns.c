@@ -7,6 +7,8 @@
 #define NVME_DEFAULT_ZONE_SIZE      (64 * MiB)
 //#define NVME_SECOND_NS_ZONE_SIZE    (64 * MiB)
 #define NVME_DEFAULT_MAX_AZ_SIZE    (128 * KiB)
+#define NVME_DEFAULT_MAX_ACTIVE_ZONES    0
+#define NVME_DEFAULT_MAX_OPEN_ZONES    0
 uint64_t lag = 0;
 //union signal sv;
 
@@ -1748,8 +1750,8 @@ static int zns_init_zone_cap(FemuCtrl *n)
     n->zone_size_bs = NVME_DEFAULT_ZONE_SIZE;
     n->zone_cap_bs = 0;
     n->cross_zone_read = true;
-    n->max_active_zones = 0;
-    n->max_open_zones = 0;
+    n->max_active_zones = NVME_DEFAULT_MAX_ACTIVE_ZONES;
+    n->max_open_zones = NVME_DEFAULT_MAX_OPEN_ZONES;
     n->zd_extension_size = 0;
 
     return 0;
